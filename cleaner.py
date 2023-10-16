@@ -1,10 +1,21 @@
 import pandas as pd
 from clickhouse_driver import Client
 from datetime import datetime, timedelta
-client = Client(host='172.17.32.21', port=9000, user='jaeger', password='utl8cb', database='jaeger')
+import logging
+import sys
+
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+root.addHandler(handler)
+
+client = Client(host='10.0.0.1', port=30803, user='jaeger', password='ejhfehfhehf', database='jaeger')
 current_time = datetime.now()
-delete_query = f"DELETE FROM jaeger_spans_local WHERE timestamp < '{current_time.strftime('%Y-%m-%d %H:%M:%S')}'"
+delete_query = f"DELETE FROM jopa WHERE timestamp = 1999"
 client.execute(delete_query)
-query_optimize = 'OPTIMIZE TABLE jaeger_spans_local FINAL'
+query_optimize = 'OPTIMIZE TABLE jopa FINAL'
 client.execute(query_optimize)
 client.disconnect()
